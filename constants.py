@@ -27,3 +27,8 @@ OUR_DESTROY_IMG_LIST = [
     os.path.join(ASSETS_DIR, 'images/hero_broken_n4.png'),
 ]
 
+# 子弹
+BULLET_IMG = os.path.join(ASSETS_DIR, 'images/bullet1.png')
+# 发射的声音
+BULLET_SHOOT_SOUNDS = os.path.join(ASSETS_DIR, 'sounds/bullet.wav')
+

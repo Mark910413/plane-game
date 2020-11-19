@@ -5,6 +5,7 @@
 
 import pygame
 import constants
+from game.bullet import Bullet
 
 
 class Plan(pygame.sprite.Sprite):
@@ -40,6 +41,9 @@ class Plan(pygame.sprite.Sprite):
 
         # 获取飞机的位置
         self.rect = self.img_list[0].get_rect()
+
+        # 获取飞机的大小
+        self.plane_width, self.plane_height = self.img_list[0].get_size()
 
     def load_src(self):
         """ 加载静态资源 """
@@ -87,6 +91,11 @@ class Plan(pygame.sprite.Sprite):
         # 3. 坠毁后
         self.active = False
 
+    def shoot(self, speed=10):
+        """ 飞机发射子弹 """
+        bullet = Bullet(self.screen, self, speed)
+        self.bullets.add(bullet)
+
 
 class OurPlane(Plan):
     """ 我方的飞机 """
@@ -96,6 +105,11 @@ class OurPlane(Plan):
     destroy_images = constants.OUR_DESTROY_IMG_LIST
     #  飞机坠毁的音乐
     down_sound_src = None
+
+    def __init__(self, screen, speed):
+        super().__init__(screen, speed)
+        self.rect.top = self.height - self.plane_height - 50
+        self.rect.centerx = int(self.width / 2)
 
     def update(self, frame):
         """ 更新飞机的动画效果 """
@@ -111,8 +125,8 @@ class OurPlane(Plan):
 
     def move_down(self):
         super().move_down()
-        if self.rect.top > self.height:
-            self.rect.top = self.height
+        if self.rect.top > self.height - self.plane_height:
+            self.rect.top = self.height - self.plane_height
 
     def move_left(self):
         super().move_left()
@@ -121,5 +135,5 @@ class OurPlane(Plan):
 
     def move_right(self):
         super().move_right()
-        if self.rect.left > self.width:
-            self.rect.left = self.width
+        if self.rect.left > self.width - self.plane_width:
+            self.rect.left = self.width - self.plane_width

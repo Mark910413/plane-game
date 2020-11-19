@@ -43,7 +43,7 @@ def main():
     status = 0
 
     # 装载我方飞机
-    our_plan = OurPlane(screen)
+    our_plan = OurPlane(screen, 8)
     # 帧数计数器
     frame = 0
     clock = pygame.time.Clock()
@@ -55,6 +55,9 @@ def main():
         if frame >= 60:
             frame = 0
 
+        # 被按下的键
+        key_pressed = pygame.key.get_pressed()
+
         # 监听退出事件
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -63,17 +66,6 @@ def main():
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if status == 0:
                     status = 1
-            elif event.type == pygame.KEYDOWN:
-                if status == 1:
-                    if event.key == pygame.K_w or event.key == pygame.K_UP:
-                        our_plan.move_up()
-                    elif event.key == pygame.K_s or event.key == pygame.K_DOWN:
-                        our_plan.move_down()
-                    elif event.key == pygame.K_a or event.key == pygame.K_LEFT:
-                        our_plan.move_left()
-                    elif event.key == pygame.K_d or event.key == pygame.K_RIGHT:
-                        our_plan.move_right()
-
         # 各个状态下
         if status == 0:
             # 游戏准备中
@@ -83,9 +75,24 @@ def main():
             screen.blit(img_game_title, img_game_title_rect)
             screen.blit(img_game_start_btn, img_game_start_btn_rect)
         elif status == 1:
+            if key_pressed[pygame.K_w] or key_pressed[pygame.K_UP]:
+                our_plan.move_up()
+            if key_pressed[pygame.K_s] or key_pressed[pygame.K_DOWN]:
+                our_plan.move_down()
+            if key_pressed[pygame.K_a] or key_pressed[pygame.K_LEFT]:
+                our_plan.move_left()
+            if key_pressed[pygame.K_d] or key_pressed[pygame.K_RIGHT]:
+                our_plan.move_right()
+            if key_pressed[pygame.K_SPACE] and (frame % 5 == 0):
+                our_plan.shoot(30)
             # 绘制游戏中的画面
+            # 绘制背景图片
             screen.blit(bg, bg.get_rect())
+            # 绘制我方飞机
             our_plan.update(frame)
+            print(our_plan.bullets)
+            # 绘制子弹
+            our_plan.bullets.update()
         pygame.display.flip()
 
 
