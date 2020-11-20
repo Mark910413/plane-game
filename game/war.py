@@ -1,5 +1,5 @@
-import pygame, sys
-
+import pygame
+import sys
 import constants
 from game.plane import OurPlane, SmallEnemyPlane
 from store.result import PlayRest
@@ -82,13 +82,13 @@ class PlaneWar(object):
                 self.our_plan.move_left()
             if key_pressed[pygame.K_d] or key_pressed[pygame.K_RIGHT]:
                 self.our_plan.move_right()
-            if key_pressed[pygame.K_SPACE] and (self.frame % 5 == 0):
+            if key_pressed[pygame.K_SPACE] and (self.frame % 10 == 0):
                 self.our_plan.shoot(10)
 
     def add_small_enemies(self, num):
         # 装载敌方小飞机
         for i in range(num):
-            plan = SmallEnemyPlane(self.screen, 4)
+            plan = SmallEnemyPlane(self.screen, 2)
             plan.add(self.small_enemies, self.enemies)
 
     def run_game(self):

@@ -7,7 +7,7 @@ def main():
 
     # 初始化
     war = PlaneWar()
-    war.add_small_enemies(10)
+    war.add_small_enemies(15)
     war.run_game()
 
 
