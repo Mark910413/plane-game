@@ -1,5 +1,7 @@
 import pygame
 import constants
+from game import war
+
 
 class Bullet(pygame.sprite.Sprite):
     """ 子弹类 """
@@ -26,7 +28,7 @@ class Bullet(pygame.sprite.Sprite):
         self.shoot_sound.set_volume(0.3)
         self.shoot_sound.play()
 
-    def update(self, *agrs):
+    def update(self, war):
         """更新子弹的位置"""
         self.rect.top -= self.speed
         # 超出屏幕的范围
@@ -34,3 +36,16 @@ class Bullet(pygame.sprite.Sprite):
             self.remove(self.plane.bullets)
         # 绘制子弹
         self.screen.blit(self.image, self.rect)
+
+        # 碰撞检测
+        rest = pygame.sprite.spritecollide(self, war.small_enemies, False)
+        print(rest, 3432)
+        for r in rest:
+            # 1.子弹消失
+            self.kill()
+            # 2 飞机爆炸,坠毁效果
+            r.broken_down()
+            # 3. 统计游戏成绩
+            war.rest.score += constants.SCORE_SHOOT_SMALL
+            # 保存历史记录
+            war.rest.set_history()
